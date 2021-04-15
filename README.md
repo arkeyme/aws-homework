@@ -2,6 +2,15 @@
 
 At initial step you should create `EC2_Tutor` key pair in AWS console, or use any you want, just change the name in `variables.tf` file, you can also change region in that file. 
 
+You may also need to comment my backedn settings on top of the `main.tf` file
+
+    backend "s3" {
+        bucket = "terra-back-1339"
+        key    = "project-1/terraform.tfstate"
+        region = "eu-north-1"
+        dynamodb_table = "terraform_lock"
+    }
+
 At first apply terraform plan:
 
     terraform init

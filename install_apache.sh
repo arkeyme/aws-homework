@@ -30,7 +30,7 @@ sudo sed -i 's/password_here/pa$$w0rd/g' /var/www/wordpress/wp-config.php
 
 ##########
 ########## Replace Database address here:
-sudo sed -i 's/localhost/REPLACE_IT/g' /var/www/wordpress/wp-config.php
+sudo sed -i 's/localhost/database-1.cluster-ctcsldio0udb.eu-north-1.rds.amazonaws.com/g' /var/www/wordpress/wp-config.php
 ###########
 ###########
 

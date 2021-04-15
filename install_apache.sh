@@ -27,10 +27,12 @@ sudo sed -i 's/database_name_here/wp/g' /var/www/wordpress/wp-config.php
 sudo sed -i 's/username_here/wpuser/g' /var/www/wordpress/wp-config.php
 sudo sed -i 's/password_here/pa$$w0rd/g' /var/www/wordpress/wp-config.php
 
-##### Replace Database address here:
-sudo sed -i 's/localhost/REPLACE_IT/g' /var/www/wordpress/wp-config.php
-######
 
+##########
+########## Replace Database address here:
+sudo sed -i 's/localhost/REPLACE_IT/g' /var/www/wordpress/wp-config.php
+###########
+###########
 
 
 

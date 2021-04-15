@@ -8,11 +8,11 @@ At first apply terraform plan:
     terraform plan
     terraform apply
 
-It will crete, 1 VPC, 2 Subnets (in different AZ), 2 routes, 2 Internet Gateways, 2 EC2 Ubuntu instances in different subnets, 2 Security groups, and 1 Load Balancer.
+It will create: 1 VPC, 2 Subnets (in different AZ), 2 routes, 2 Internet Gateways, 2 EC2 Ubuntu instances in different subnets, 2 Security groups, and 1 Load Balancer and assign Public Ips to EC2 instances. Now you can connect to EC2 ubuntu hosts using their Public IPs. To get an IPs I added output of Public IPs to terrafrom `main.cf` plan, if they does not appear try to run `terraform refresh`.
 
-At second create RDS Aurora instance in created Availability Zones using this [guide](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/php-hawordpress-tutorial.html#php-hawordpress-tutorial-database)
+Next, create RDS Aurora instance in created AZ using this [guide](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/php-hawordpress-tutorial.html#php-hawordpress-tutorial-database) Don't expose it to the world, please use Security group `db-sg` to limit access
 
-Next, create wp database in db instance from any EC2 instance created early by terraform plan. To get an IPs I add output of Public IPs to terrafrom `main.cf` plan, if they does not appear try to run `terraform refresh`:
+Next, create wp database in db instance from any EC2 instance created early by terraform plan. 
 
     mysql -u admin -p -h <cluster name>.cluster-<cluster token>.eu-west-1.rds.amazonaws.com
     CREATE DATABASE wp;

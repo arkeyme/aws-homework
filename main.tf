@@ -1,10 +1,10 @@
 terraform {
-  backend "s3" {
-    bucket = "terra-back-1339"
-    key    = "project-1/terraform.tfstate"
-    region = "eu-north-1"
-    dynamodb_table = "terraform_lock"
-  }
+  # backend "s3" {
+  #   bucket = "terra-back-1339"
+  #   key    = "project-1/terraform.tfstate"
+  #   region = "eu-north-1"
+  #   dynamodb_table = "terraform_lock"
+  # }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -35,7 +35,7 @@ data "aws_ami" "ubuntu" {
 
 provider "aws" {
   profile = "default"
-  region  = "eu-west-1"
+  region  = var.aws_region
 }
 
 ### Start of VPC block #############
@@ -98,6 +98,11 @@ resource "aws_route_table_association" "b" {
 
 ### Start of EC2 block #############
 
+data "aws_vpc" "vpc_selected" {
+  id = aws_vpc.first_vpc.id
+}
+
+
 resource "aws_security_group" "allow_ssh_wordpress-1" {
   name        = "allow_1"
   description = "Allow ssh inbound traffic"
@@ -116,7 +121,7 @@ resource "aws_security_group" "allow_ssh_wordpress-1" {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [data.aws_vpc.vpc_selected.cidr_block]
   }
 
  ingress {
@@ -157,7 +162,7 @@ resource "aws_security_group" "allow_ssh_wordpress-2" {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [data.aws_vpc.vpc_selected.cidr_block]
   }
 
  ingress {
@@ -183,7 +188,7 @@ resource "aws_instance" "wordpress-1" {
   count = 1
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  key_name = "EC2_Tutor"
+  key_name = var.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh_wordpress-1.id]
   subnet_id   = aws_subnet.sbnt-vpc1.id
   user_data = file("install_apache.sh")
@@ -197,7 +202,7 @@ resource "aws_instance" "wordpress-2" {
   count = 1
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  key_name = "EC2_Tutor"
+  key_name = var.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh_wordpress-2.id]
   subnet_id   = aws_subnet.sbnt-vpc2.id
   user_data = file("install_apache.sh")
@@ -256,3 +261,4 @@ output "instance_wordpress-2_public_ip" {
   description = "Public IP address of the EC2 instance"
   value       = aws_instance.wordpress-2[0].public_ip
 }
+

@@ -23,7 +23,7 @@ Next, create wp database in db instance from any EC2 instance created early by t
     ### to drop (delete) table:
     ### DROP DATABASE wp;
 
-Next add to "<cluster name>.cluster-<cluster token>.eu-west-1.rds.amazonaws.com" line to install_apache.sh script and run:
+Next add to `<cluster name>.cluster-<cluster token>.eu-west-1.rds.amazonaws.com` line to install_apache.sh script and run:
 
     terraform apply
 

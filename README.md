@@ -50,17 +50,17 @@ Create initial config, save login and password.
 
 Next, go to Settings and past to  `WordPress Address (URL)` and `Site Address (URL)` address of our load balancer, for example:
 
-![pic2](imgs\2.png)
-![pic1](imgs\1.png)
+![pic2](imgs/2.png)
+![pic1](imgs/1.png)
 
 
 Save and now use address of our LB to connect to wordpress host. Everyting should works, if not check LB status:
 
-![pic3](imgs\3.png)
+![pic3](imgs/3.png)
 
 Next, is time to upload files to our Wordpress site:
 
-![pic4](imgs\4.png)
+![pic4](imgs/4.png)
 
 Press F5 few times to be shure that media files saved to EFS. You can also check them directry on the mounted filesystem, by connecting to EC2 instance over ssh and typing:
 
@@ -68,7 +68,7 @@ Press F5 few times to be shure that media files saved to EFS. You can also check
 
 Both files presented on both hosts:
 
-![pic5](imgs\5.png)
+![pic5](imgs/5.png)
 
 Now it is time to disable Elastic IPs for our EC2 instances by commenting this lines in `main.tf` file:
 

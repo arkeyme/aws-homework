@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "terra-back-1339"
-    key    = "project-1/terraform.tfstate"
+    key    = "lb/terraform.tfstate"
     region = "eu-north-1"
     dynamodb_table = "terraform_lock"
   }
@@ -211,7 +211,7 @@ resource "aws_security_group" "allow_ssh_wordpress-2" {
 }
 
 resource "aws_instance" "wordpress-1" {
-  count = 1
+  count = 4
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   key_name = var.key_name
@@ -225,7 +225,7 @@ resource "aws_instance" "wordpress-1" {
 
 
 resource "aws_instance" "wordpress-2" {
-  count = 1
+  count = 4
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   key_name = var.key_name
@@ -267,7 +267,7 @@ resource "aws_elb" "lb1" {
   }
   
   security_groups             = [aws_security_group.allow_ssh_wordpress-1.id]
-  instances                   = [aws_instance.wordpress-1[0].id, aws_instance.wordpress-2[0].id]
+  instances                   = concat(aws_instance.wordpress-1.*.id, aws_instance.wordpress-2.*.id)
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
